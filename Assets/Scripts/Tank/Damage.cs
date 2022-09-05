@@ -60,6 +60,18 @@ public class Damage : MonoBehaviour
 
         //play the particle system of the tank exploding
         m_ExplosionParticles.Play();
+
+        EnemyTankMovement enemyMovement = GetComponent<EnemyTankMovement>();
+        if (enemyMovement != null)
+        {
+            enemyMovement.DisableFollow();
+        }
+
+        EnemyFiring enemyFiring = GetComponent<EnemyFiring>();
+        if (enemyFiring != null)
+        {
+            enemyFiring.DisableFire();
+        }
         //turn the tank off
         gameObject.SetActive(false);
     }

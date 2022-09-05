@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.AI;
 
 public class EnemyTankMovement : MonoBehaviour
-{
+{ 
     // the tank will stop moving towards the player once it reaches this distance
     public float m_CloseDistance = 8f;
     // the tanks turret object
@@ -27,6 +27,10 @@ public class EnemyTankMovement : MonoBehaviour
         m_Follow = false;
     }
 
+    public void DisableFollow()
+    {
+        m_Follow = false;
+    }
     private void OnEnable()
     {
         // when the tank is turned on, make sure it is not kinematic

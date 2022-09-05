@@ -22,6 +22,11 @@ public class EnemyFiring : MonoBehaviour
         
     }
 
+    public void DisableFire()
+    {
+        m_CanShoot = false;
+    }
+
     // Update is called once per frame
     void Update()
     {
