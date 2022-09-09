@@ -10,6 +10,9 @@ public class PlayerShooting : MonoBehaviour
     public Transform m_FireTransform;
     // the force given to the shell when fired
     public float m_LaunchForce = 30f;
+    public float fireRate = 0.5f;
+    public float nextFire = 0.0f;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -19,10 +22,9 @@ public class PlayerShooting : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
-
-        if (Input.GetButtonUp("Fire1"))
+        if (Input.GetButtonDown("Fire1") && Time.time > nextFire)
         {
+            nextFire = Time.time + fireRate;
             Fire();
         }
     }
@@ -34,4 +36,20 @@ public class PlayerShooting : MonoBehaviour
         //Set the shell's velocity to launch force in the fire positions forward direction
         shellInstance.velocity = m_LaunchForce * m_FireTransform.forward;
      }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.layer == 9)
+        {
+            Destroy(other.gameObject);
+            fireRate = 0f;
+            StartCoroutine("waitTime");
+        }
+    }
+
+    IEnumerator waitTime()
+    {
+        yield return new WaitForSeconds (10);
+        fireRate = 0.5f;
+    }
 }

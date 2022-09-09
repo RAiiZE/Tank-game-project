@@ -167,6 +167,7 @@ public class GameManager : MonoBehaviour
         {
             m_Tanks[i].SetActive(true);
         }
+        GameObject.FindGameObjectWithTag("Player").transform.position = new Vector3(0, 0, 0);
     }
 
     public void OnHighScores()

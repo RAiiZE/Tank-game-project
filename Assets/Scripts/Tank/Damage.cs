@@ -10,7 +10,7 @@ public class Damage : MonoBehaviour
     // a prefab that will be instantiated in Awake, then used whenever the tank dies
     public GameObject m_ExplosionPrefab;
 
-    private float m_CurrentHealth;
+    public float m_CurrentHealth;
     private bool m_Dead;
     // the particle  system that will play when the tank is destroyed
     private ParticleSystem m_ExplosionParticles;
