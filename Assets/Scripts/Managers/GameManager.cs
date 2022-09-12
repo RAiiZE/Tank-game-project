@@ -17,6 +17,8 @@ public class GameManager : MonoBehaviour
 
     public GameObject[] m_Tanks;
 
+    public EnemySpawner spawner;
+
     private float m_GameTime = 0;
     public float GameTime { get { return m_GameTime; } }
 
@@ -37,6 +39,9 @@ public class GameManager : MonoBehaviour
     }
     void Start()
     {
+        // wave system
+        spawner.NextWave();
+
         for (int i = 0; i < m_Tanks.Length; i++)
         {
             m_Tanks[i].SetActive(false);
@@ -154,6 +159,12 @@ public class GameManager : MonoBehaviour
     }
     public void OnNewGame()
     {
+        if (IsPlayerDead())
+        {
+            spawner.PlayerDeath();
+        }
+        spawner.NextWave();
+
         m_NewGameButton.gameObject.SetActive(false);
         m_HighScoresButton.gameObject.SetActive(false);
         m_HighScorePanel.gameObject.SetActive(false);

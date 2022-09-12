@@ -13,6 +13,11 @@ public class PlayerShooting : MonoBehaviour
     public float fireRate = 0.5f;
     public float nextFire = 0.0f;
 
+    private bool dualFire = false;
+    public GameObject secondSpawner;
+
+    
+
     // Start is called before the first frame update
     void Start()
     {
@@ -35,6 +40,13 @@ public class PlayerShooting : MonoBehaviour
 
         //Set the shell's velocity to launch force in the fire positions forward direction
         shellInstance.velocity = m_LaunchForce * m_FireTransform.forward;
+
+        if (dualFire)
+        {
+            
+            shellInstance = Instantiate(m_Shell, secondSpawner.transform.position, secondSpawner.transform.rotation) as Rigidbody;
+            shellInstance.velocity = m_LaunchForce * secondSpawner.transform.forward;
+        }
      }
 
     private void OnTriggerEnter(Collider other)
@@ -43,13 +55,41 @@ public class PlayerShooting : MonoBehaviour
         {
             Destroy(other.gameObject);
             fireRate = 0f;
-            StartCoroutine("waitTime");
+            StartCoroutine("WaitTimeFire");
+        }
+
+        if (other.gameObject.layer == 10)
+        {
+            Destroy(other.gameObject);
+            dualFire = true;
+            secondSpawner.SetActive(true);
+            StartCoroutine("WaitTimeDual");
+        }
+
+        if (other.gameObject.layer == 11)
+        {
+            Destroy(other.gameObject);
+            m_LaunchForce = 80f;
+            StartCoroutine("WaitTimeForce");
+
         }
     }
 
-    IEnumerator waitTime()
+    IEnumerator WaitTimeFire()
     {
         yield return new WaitForSeconds (10);
         fireRate = 0.5f;
+    }
+    IEnumerator WaitTimeDual()
+    {
+        yield return new WaitForSeconds(10);
+        dualFire = false;
+        secondSpawner.SetActive(false);
+    }
+
+    IEnumerator WaitTimeForce()
+    {
+        yield return new WaitForSeconds(10);
+        m_LaunchForce = 30f;
     }
 }
