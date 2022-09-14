@@ -19,6 +19,8 @@ public class EnemyTankMovement : MonoBehaviour
     // will be set to true when this tank should follow the player
     private bool m_Follow;
 
+    public bool canMove = true;
+
     private void Awake()
     {
         m_Player = GameObject.FindGameObjectWithTag("Player");
@@ -69,8 +71,9 @@ public class EnemyTankMovement : MonoBehaviour
         // get distance from player to enemy tank
         float distance = (m_Player.transform.position - transform.position).magnitude;
         // if distance is less than stop distance, then stop moving
-        if (distance > m_CloseDistance)
+        if (distance > m_CloseDistance && canMove)
         {
+
             m_NavAgent.SetDestination(m_Player.transform.position);
             m_NavAgent.isStopped = false;
         }
@@ -82,5 +85,10 @@ public class EnemyTankMovement : MonoBehaviour
         {
             m_Turret.LookAt(m_Player.transform);
         }
+
+
+
+
+
     }
 }
