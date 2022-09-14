@@ -41,6 +41,7 @@ public class PlayerShooting : MonoBehaviour
         //Set the shell's velocity to launch force in the fire positions forward direction
         shellInstance.velocity = m_LaunchForce * m_FireTransform.forward;
 
+        // shooting from second spawner
         if (dualFire)
         {
             
@@ -49,8 +50,10 @@ public class PlayerShooting : MonoBehaviour
         }
      }
 
+    // picking up power ups
     private void OnTriggerEnter(Collider other)
     {
+        // Rapid fire upgrade
         if (other.gameObject.layer == 9)
         {
             Destroy(other.gameObject);
@@ -58,6 +61,7 @@ public class PlayerShooting : MonoBehaviour
             StartCoroutine("WaitTimeFire");
         }
 
+        // Dual fire upgrade
         if (other.gameObject.layer == 10)
         {
             Destroy(other.gameObject);
@@ -66,6 +70,7 @@ public class PlayerShooting : MonoBehaviour
             StartCoroutine("WaitTimeDual");
         }
 
+        // Sniper shot upgrade
         if (other.gameObject.layer == 11)
         {
             Destroy(other.gameObject);
@@ -75,6 +80,7 @@ public class PlayerShooting : MonoBehaviour
         }
     }
 
+    // timers for each power ups
     IEnumerator WaitTimeFire()
     {
         yield return new WaitForSeconds (10);
