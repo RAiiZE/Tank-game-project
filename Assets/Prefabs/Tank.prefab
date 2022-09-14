@@ -458,7 +458,7 @@ Rigidbody:
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 4
-  m_CollisionDetection: 2
+  m_CollisionDetection: 0
 --- !u!65 &5777723758356443613
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -501,6 +501,9 @@ MonoBehaviour:
   m_Shell: {fileID: 1177857706058359766, guid: 42611e8cce7eefe4e8ae90de102611cc, type: 3}
   m_FireTransform: {fileID: 1719509912}
   m_LaunchForce: 30
+  fireRate: 0.5
+  nextFire: 0
+  secondSpawner: {fileID: 0}
 --- !u!114 &4375836221206488634
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -515,3 +518,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_StartingHealth: 100
   m_ExplosionPrefab: {fileID: 122668, guid: 5f53e2b760f0b2a4c8b27bb6f25b3c90, type: 3}
+  m_CurrentHealth: 0
