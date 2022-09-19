@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class EnemySpawner : MonoBehaviour
 {
@@ -11,6 +12,8 @@ public class EnemySpawner : MonoBehaviour
 
     public Transform spawnPointsParent;
     List<Vector3> spawnPoints = new List<Vector3> ();
+
+    public Text waveCounter;
 
     public GameManager gameManager;
 
@@ -51,5 +54,11 @@ public class EnemySpawner : MonoBehaviour
     public void PlayerDeath()
     {
         wave = 0;
+    }
+
+    public void Update()
+    {
+        // displays wave counter at the top of scene
+        waveCounter.text = "Wave: " + wave;
     }
 }

@@ -19,6 +19,13 @@ public class GameManager : MonoBehaviour
 
     public EnemySpawner spawner;
 
+    public Button powerUpFireRate;
+    public Button powerUpHealth;
+    public Button powerUpDamage;
+
+    public PlayerShooting fireRate;
+    public Damage damage;
+
     private float m_GameTime = 0;
     public float GameTime { get { return m_GameTime; } }
 
@@ -53,6 +60,10 @@ public class GameManager : MonoBehaviour
         m_HighScorePanel.gameObject.SetActive(false);
         m_NewGameButton.gameObject.SetActive(false);
         m_HighScoresButton.gameObject.SetActive(false);
+
+        powerUpDamage.gameObject.SetActive(false);
+        powerUpFireRate.gameObject.SetActive(false);
+        powerUpHealth.gameObject.SetActive(false);
     }
     private bool OneTankLeft()
     {
@@ -110,6 +121,7 @@ public class GameManager : MonoBehaviour
                 if (OneTankLeft() == true)
                 {
                     isGameOver = true;
+                    
                 }
                 else if (IsPlayerDead() == true)
                 {
@@ -118,22 +130,28 @@ public class GameManager : MonoBehaviour
                 if (isGameOver == true)
                 {
                     m_GameState = GameState.Gameover;
-                    m_TimerText.gameObject.SetActive(false);
+                    // m_TimerText.gameObject.SetActive(false); "for testing"
 
-                    m_NewGameButton.gameObject.SetActive(true);
-                    m_HighScoresButton.gameObject.SetActive(true);
+                    //m_NewGameButton.gameObject.SetActive(true); "FOR TESTING"
+                    //m_HighScoresButton.gameObject.SetActive(true); "for testing"
 
                     if (IsPlayerDead() == true)
                     {
-                        m_MessageText.text = "Try Again!";
+                        m_MessageText.text = "Game Over!";
+                        m_NewGameButton.gameObject.SetActive(true);
                     }
                     else
                     {
-                        m_MessageText.text = "Winner!!";
+                        //m_MessageText.text = "Winner!!"; "for testing"
 
                         //save the score
-                        m_HighScores.AddScore(Mathf.RoundToInt(m_GameTime));
-                        m_HighScores.SaveScoresToFile();
+                        //m_HighScores.AddScore(Mathf.RoundToInt(m_GameTime)); "POSSIBLY CHANGE THESE TWO LINES TO AN IF STATEMENT FOR BEATING FINAL WAVE"
+                        //m_HighScores.SaveScoresToFile();
+                        powerUpDamage.gameObject.SetActive(true);
+                        powerUpFireRate.gameObject.SetActive(true);
+                        powerUpHealth.gameObject.SetActive(true);
+
+                        OnNewGame();
                     }
                 }
                 break;
@@ -169,16 +187,17 @@ public class GameManager : MonoBehaviour
         m_HighScoresButton.gameObject.SetActive(false);
         m_HighScorePanel.gameObject.SetActive(false);
 
-        m_GameTime = 0;
+        //m_GameTime = 0; "For testing"
         m_GameState = GameState.Playing;
-        m_TimerText.gameObject.SetActive(true);
+        //m_TimerText.gameObject.SetActive(true); "for testing
         m_MessageText.text = "";
 
         for (int i = 0; i < m_Tanks.Length; i++)
         {
             m_Tanks[i].SetActive(true);
         }
-        GameObject.FindGameObjectWithTag("Player").transform.position = new Vector3(0, 0, 0);
+        //GameObject.FindGameObjectWithTag("Player").transform.position = new Vector3(0, 0, 0); "for testing"
+        
     }
 
     public void OnHighScores()
@@ -195,5 +214,20 @@ public class GameManager : MonoBehaviour
             text += string.Format("{0:D2}:{1:D2}\n", (seconds / 60), (seconds % 60));
         }
         m_HighScoresText.text = text;
+    }
+
+    public void PowerUpFireRate()
+    {
+        fireRate.fireRate += 0.2f;
+    }
+
+    public void PowerUpDamage()
+    {
+
+    }
+
+    public void PowerUpHealth()
+    {
+        
     }
 }

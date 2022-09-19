@@ -23,7 +23,7 @@ public class Damage : MonoBehaviour
         //disable the prefab so it can be activated when its required
         m_ExplosionParticles.gameObject.SetActive(false);
     }
-    private void OnEnable()
+    public void OnEnable()
     {
         //when the tank is enabled, reset the tanks health and whether or not it is dead
         m_CurrentHealth = m_StartingHealth;
