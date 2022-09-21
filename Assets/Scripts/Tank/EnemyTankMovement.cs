@@ -78,6 +78,10 @@ public class EnemyTankMovement : MonoBehaviour
     }
     void Update()
     {
+        if (!canMove)
+        {
+            m_NavAgent.isStopped = true;
+        }
         if (m_Follow == false) // not following player
         {
             wayPointTimer += Time.deltaTime;
