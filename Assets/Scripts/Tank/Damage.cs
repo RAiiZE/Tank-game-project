@@ -54,6 +54,8 @@ public class Damage : MonoBehaviour
         //set the flag so that this function is only called once
         m_Dead = true;
 
+        
+
         //move the instantiated exploision prefab to the tanks position and turn it on
         m_ExplosionParticles.transform.position = transform.position;
         m_ExplosionParticles.gameObject.SetActive(true);

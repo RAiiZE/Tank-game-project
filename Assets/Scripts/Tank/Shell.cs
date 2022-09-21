@@ -10,7 +10,7 @@ public class Shell : MonoBehaviour
     public float m_ExplosionForce = 100f;
     public ParticleSystem m_ExplosionParticles;
 
-    private float CalculateDamage(Vector3 targetPosition)
+    public float CalculateDamage(Vector3 targetPosition)
     {
         //create a vector from the shell to the target
         Vector3 explosionToTarget = targetPosition - transform.position;

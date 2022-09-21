@@ -19,12 +19,13 @@ public class GameManager : MonoBehaviour
 
     public EnemySpawner spawner;
 
-    public Button powerUpFireRate;
-    public Button powerUpHealth;
-    public Button powerUpDamage;
+    // Buttons for powerups
+    public Button powerUpFireRate, powerUpHealth, powerUpDamage;
 
-    public PlayerShooting fireRate;
-    public Damage damage;
+
+    public GameObject player;
+
+    public GameObject shell;
 
     private float m_GameTime = 0;
     public float GameTime { get { return m_GameTime; } }
@@ -46,6 +47,8 @@ public class GameManager : MonoBehaviour
     }
     void Start()
     {
+
+
         // wave system
         spawner.NextWave();
 
@@ -64,6 +67,8 @@ public class GameManager : MonoBehaviour
         powerUpDamage.gameObject.SetActive(false);
         powerUpFireRate.gameObject.SetActive(false);
         powerUpHealth.gameObject.SetActive(false);
+
+        shell.GetComponent<Shell>().m_MaxDamage = 34;
     }
     private bool OneTankLeft()
     {
@@ -151,7 +156,9 @@ public class GameManager : MonoBehaviour
                         powerUpFireRate.gameObject.SetActive(true);
                         powerUpHealth.gameObject.SetActive(true);
 
-                        OnNewGame();
+                        
+
+                        //OnNewGame();
                     }
                 }
                 break;
@@ -187,6 +194,10 @@ public class GameManager : MonoBehaviour
         m_HighScoresButton.gameObject.SetActive(false);
         m_HighScorePanel.gameObject.SetActive(false);
 
+        powerUpDamage.gameObject.SetActive(false);
+        powerUpFireRate.gameObject.SetActive(false);
+        powerUpHealth.gameObject.SetActive(false);
+
         //m_GameTime = 0; "For testing"
         m_GameState = GameState.Playing;
         //m_TimerText.gameObject.SetActive(true); "for testing
@@ -218,16 +229,17 @@ public class GameManager : MonoBehaviour
 
     public void PowerUpFireRate()
     {
-        fireRate.fireRate += 0.2f;
+        player.GetComponent<PlayerShooting>().fireRate -= 0.1f;
+        Debug.Log("Fire Rate Increased!");
     }
 
     public void PowerUpDamage()
     {
-
+        shell.GetComponent<Shell>().m_MaxDamage += 10;
     }
 
     public void PowerUpHealth()
     {
-        
+        player.GetComponent<Damage>().m_CurrentHealth += 20;
     }
 }
