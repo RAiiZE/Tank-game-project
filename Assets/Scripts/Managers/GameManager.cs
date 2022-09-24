@@ -241,5 +241,7 @@ public class GameManager : MonoBehaviour
     public void PowerUpHealth()
     {
         player.GetComponent<Damage>().m_CurrentHealth += 20;
+        
+        
     }
 }

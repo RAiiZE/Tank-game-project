@@ -51,7 +51,7 @@ public class Shell : MonoBehaviour
             {
                 //calculate the amount of damage the target should take based on its distance from the shell
                 float damage = CalculateDamage(targetRigidbody.position);
-                targetHealth.TakeDamage(damage);
+                targetHealth.TakeDamage((int)damage);
 
                    
             }
