@@ -21,7 +21,7 @@ public class HealthBar : MonoBehaviour
 
     public void SetHeath(int health)
     {
-        slider.value = health;
+        slider.value = Mathf.Lerp(slider.value, health, Time.deltaTime * 7);
 
         fill.color = gradient.Evaluate(slider.normalizedValue);
     }

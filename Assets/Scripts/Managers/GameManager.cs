@@ -8,6 +8,7 @@ public class GameManager : MonoBehaviour
 
     public Text m_MessageText;
     public Text m_TimerText;
+    public Text activeStats;
 
     public GameObject m_HighScorePanel;
     public Text m_HighScoresText;
@@ -68,6 +69,8 @@ public class GameManager : MonoBehaviour
         powerUpFireRate.gameObject.SetActive(false);
         powerUpHealth.gameObject.SetActive(false);
 
+        activeStats.gameObject.SetActive(false);
+
         shell.GetComponent<Shell>().m_MaxDamage = 34;
     }
     private bool OneTankLeft()
@@ -123,6 +126,9 @@ public class GameManager : MonoBehaviour
                 m_GameTime += Time.deltaTime;
                 int seconds = Mathf.RoundToInt(m_GameTime);
                 m_TimerText.text = string.Format("{0:D2}:{1:D2}", (seconds / 60), (seconds % 60));
+                activeStats.gameObject.SetActive(true);
+                
+
                 if (OneTankLeft() == true)
                 {
                     isGameOver = true;
@@ -138,7 +144,7 @@ public class GameManager : MonoBehaviour
                     // m_TimerText.gameObject.SetActive(false); "for testing"
 
                     //m_NewGameButton.gameObject.SetActive(true); "FOR TESTING"
-                    //m_HighScoresButton.gameObject.SetActive(true); "for testing"
+                    //m_HighScoresButton.gameObject.SetActive(true); //"for testing"
 
                     if (IsPlayerDead() == true)
                     {
@@ -161,6 +167,9 @@ public class GameManager : MonoBehaviour
                         //OnNewGame();
                     }
                 }
+                activeStats.text = "Fire Rate: " + player.GetComponent<PlayerShooting>().fireRate 
+                    +
+                    " Damage: " + shell.GetComponent<Shell>().m_MaxDamage;
                 break;
             case GameState.Gameover:
                 if (Input.GetKeyUp(KeyCode.Return) == true)
@@ -169,6 +178,8 @@ public class GameManager : MonoBehaviour
                     m_GameState = GameState.Playing;
                     m_MessageText.text = "";
                     m_TimerText.gameObject.SetActive(true);
+
+                    
 
                     for (int i = 0; i < m_Tanks.Length; i++)
                     {
@@ -187,6 +198,9 @@ public class GameManager : MonoBehaviour
         if (IsPlayerDead())
         {
             spawner.PlayerDeath();
+            player.GetComponent<PlayerShooting>().fireRate = 0.5f;
+            shell.GetComponent<Shell>().m_MaxDamage = 34;
+            player.GetComponent<Damage>().m_CurrentHealth = 100;
         }
         spawner.NextWave();
 
@@ -197,6 +211,8 @@ public class GameManager : MonoBehaviour
         powerUpDamage.gameObject.SetActive(false);
         powerUpFireRate.gameObject.SetActive(false);
         powerUpHealth.gameObject.SetActive(false);
+
+        
 
         //m_GameTime = 0; "For testing"
         m_GameState = GameState.Playing;
