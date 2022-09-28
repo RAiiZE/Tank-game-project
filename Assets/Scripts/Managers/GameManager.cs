@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
     public HighScores m_HighScores;
@@ -16,7 +17,9 @@ public class GameManager : MonoBehaviour
     public Button m_NewGameButton;
     public Button m_HighScoresButton;
 
-    public GameObject[] m_Tanks;
+    public Button returnToMenu;
+
+    public List <GameObject> m_Tanks = new List<GameObject>();
 
     public EnemySpawner spawner;
 
@@ -53,7 +56,7 @@ public class GameManager : MonoBehaviour
         // wave system
         spawner.NextWave();
 
-        for (int i = 0; i < m_Tanks.Length; i++)
+        for (int i = 0; i < m_Tanks.Count; i++)
         {
             m_Tanks[i].SetActive(false);
         }
@@ -64,6 +67,7 @@ public class GameManager : MonoBehaviour
         m_HighScorePanel.gameObject.SetActive(false);
         m_NewGameButton.gameObject.SetActive(false);
         m_HighScoresButton.gameObject.SetActive(false);
+        returnToMenu.gameObject.SetActive(false);
 
         powerUpDamage.gameObject.SetActive(false);
         powerUpFireRate.gameObject.SetActive(false);
@@ -77,7 +81,7 @@ public class GameManager : MonoBehaviour
     {
         int numTanksLeft = 0;
 
-        for (int i = 0; i < m_Tanks.Length; i++)
+        for (int i = 0; i < m_Tanks.Count; i++)
         {
             if (m_Tanks[i].activeSelf == true)
             {
@@ -89,7 +93,7 @@ public class GameManager : MonoBehaviour
 
     private bool IsPlayerDead()
     {
-        for (int i = 0; i < m_Tanks.Length; i++)
+        for (int i = 0; i < m_Tanks.Count; i++)
         {
             if (m_Tanks[i].activeSelf == false)
             {
@@ -115,7 +119,7 @@ public class GameManager : MonoBehaviour
                     m_MessageText.text = "";
                     m_GameState = GameState.Playing;
 
-                    for (int i = 0; i < m_Tanks.Length; i++)
+                    for (int i = 0; i < m_Tanks.Count; i++)
                     {
                         m_Tanks[i].SetActive(true);
                     }
@@ -153,14 +157,32 @@ public class GameManager : MonoBehaviour
                     }
                     else
                     {
+                        if (spawner.wave == 10)
+                        {
+                            m_MessageText.text = "Congratulations, You Win!";
+
+                            m_HighScores.AddScore(Mathf.RoundToInt(m_GameTime));
+                            m_HighScores.SaveScoresToFile();
+
+                            returnToMenu.gameObject.SetActive(true);
+                        }
+                        else
+                        {
+                            powerUpDamage.gameObject.SetActive(true);
+                            powerUpFireRate.gameObject.SetActive(true);
+                            powerUpHealth.gameObject.SetActive(true);
+                        }
+
                         //m_MessageText.text = "Winner!!"; "for testing"
 
                         //save the score
                         //m_HighScores.AddScore(Mathf.RoundToInt(m_GameTime)); "POSSIBLY CHANGE THESE TWO LINES TO AN IF STATEMENT FOR BEATING FINAL WAVE"
                         //m_HighScores.SaveScoresToFile();
-                        powerUpDamage.gameObject.SetActive(true);
+                       /*
+                        * 
+                        * powerUpDamage.gameObject.SetActive(true);
                         powerUpFireRate.gameObject.SetActive(true);
-                        powerUpHealth.gameObject.SetActive(true);
+                        powerUpHealth.gameObject.SetActive(true);*/
 
                         
 
@@ -181,7 +203,7 @@ public class GameManager : MonoBehaviour
 
                     
 
-                    for (int i = 0; i < m_Tanks.Length; i++)
+                    for (int i = 0; i < m_Tanks.Count; i++)
                     {
                         m_Tanks[i].SetActive(true);
                     }
@@ -219,7 +241,7 @@ public class GameManager : MonoBehaviour
         //m_TimerText.gameObject.SetActive(true); "for testing
         m_MessageText.text = "";
 
-        for (int i = 0; i < m_Tanks.Length; i++)
+        for (int i = 0; i < m_Tanks.Count; i++)
         {
             m_Tanks[i].SetActive(true);
         }
@@ -243,9 +265,13 @@ public class GameManager : MonoBehaviour
         m_HighScoresText.text = text;
     }
 
+    public void ReturnToMenu(string MainMenu)
+    {
+        SceneManager.LoadScene(MainMenu);
+    }
     public void PowerUpFireRate()
     {
-        player.GetComponent<PlayerShooting>().fireRate -= 0.1f;
+        player.GetComponent<PlayerShooting>().fireRate -= 0.07f;
         Debug.Log("Fire Rate Increased!");
     }
 
@@ -256,7 +282,7 @@ public class GameManager : MonoBehaviour
 
     public void PowerUpHealth()
     {
-        player.GetComponent<Damage>().m_CurrentHealth += 20;
+        player.GetComponent<Damage>().m_CurrentHealth += 50;
         
         
     }

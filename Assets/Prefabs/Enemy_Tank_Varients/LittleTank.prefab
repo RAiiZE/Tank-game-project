@@ -275,7 +275,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6b9020bdd1cac441ba930c19f68992c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Shell: {fileID: 1177857706058359766, guid: 42611e8cce7eefe4e8ae90de102611cc, type: 3}
+  m_Shell: {fileID: 2293816361411864017, guid: 0c8710a6c10ff1e46aa344cd9c263aaa, type: 3}
   m_FireTransform: {fileID: 3672643693075838002}
   m_LaunchForce: 20
   m_ShootDelay: 1
@@ -292,6 +292,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_StartingHealth: 10
+  healthBar: {fileID: 0}
   m_ExplosionPrefab: {fileID: 122668, guid: 5f53e2b760f0b2a4c8b27bb6f25b3c90, type: 3}
   m_CurrentHealth: 0
 --- !u!1 &5253467580677089878

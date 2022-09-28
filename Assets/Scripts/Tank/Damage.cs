@@ -5,7 +5,7 @@ using UnityEngine.UI;
 public class Damage : MonoBehaviour
 {
     // health each tank starts with
-    public float m_StartingHealth = 100f;
+    public float m_StartingHealth = 250f;
 
     // set up the healthbar
     public HealthBar healthBar;
