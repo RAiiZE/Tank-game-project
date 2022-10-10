@@ -2,12 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
     public HighScores m_HighScores;
 
     public Text m_MessageText;
     public Text m_TimerText;
+    public Text activeStats;
 
     public GameObject m_HighScorePanel;
     public Text m_HighScoresText;
@@ -15,7 +17,9 @@ public class GameManager : MonoBehaviour
     public Button m_NewGameButton;
     public Button m_HighScoresButton;
 
-    public GameObject[] m_Tanks;
+    public Button returnToMenu;
+
+    public List <GameObject> m_Tanks = new List<GameObject>();
 
     public EnemySpawner spawner;
 
@@ -52,7 +56,7 @@ public class GameManager : MonoBehaviour
         // wave system
         spawner.NextWave();
 
-        for (int i = 0; i < m_Tanks.Length; i++)
+        for (int i = 0; i < m_Tanks.Count; i++)
         {
             m_Tanks[i].SetActive(false);
         }
@@ -63,10 +67,13 @@ public class GameManager : MonoBehaviour
         m_HighScorePanel.gameObject.SetActive(false);
         m_NewGameButton.gameObject.SetActive(false);
         m_HighScoresButton.gameObject.SetActive(false);
+        returnToMenu.gameObject.SetActive(false);
 
         powerUpDamage.gameObject.SetActive(false);
         powerUpFireRate.gameObject.SetActive(false);
         powerUpHealth.gameObject.SetActive(false);
+
+        activeStats.gameObject.SetActive(false);
 
         shell.GetComponent<Shell>().m_MaxDamage = 34;
     }
@@ -74,7 +81,7 @@ public class GameManager : MonoBehaviour
     {
         int numTanksLeft = 0;
 
-        for (int i = 0; i < m_Tanks.Length; i++)
+        for (int i = 0; i < m_Tanks.Count; i++)
         {
             if (m_Tanks[i].activeSelf == true)
             {
@@ -86,7 +93,7 @@ public class GameManager : MonoBehaviour
 
     private bool IsPlayerDead()
     {
-        for (int i = 0; i < m_Tanks.Length; i++)
+        for (int i = 0; i < m_Tanks.Count; i++)
         {
             if (m_Tanks[i].activeSelf == false)
             {
@@ -112,7 +119,7 @@ public class GameManager : MonoBehaviour
                     m_MessageText.text = "";
                     m_GameState = GameState.Playing;
 
-                    for (int i = 0; i < m_Tanks.Length; i++)
+                    for (int i = 0; i < m_Tanks.Count; i++)
                     {
                         m_Tanks[i].SetActive(true);
                     }
@@ -123,6 +130,9 @@ public class GameManager : MonoBehaviour
                 m_GameTime += Time.deltaTime;
                 int seconds = Mathf.RoundToInt(m_GameTime);
                 m_TimerText.text = string.Format("{0:D2}:{1:D2}", (seconds / 60), (seconds % 60));
+                activeStats.gameObject.SetActive(true);
+                
+
                 if (OneTankLeft() == true)
                 {
                     isGameOver = true;
@@ -138,7 +148,7 @@ public class GameManager : MonoBehaviour
                     // m_TimerText.gameObject.SetActive(false); "for testing"
 
                     //m_NewGameButton.gameObject.SetActive(true); "FOR TESTING"
-                    //m_HighScoresButton.gameObject.SetActive(true); "for testing"
+                    //m_HighScoresButton.gameObject.SetActive(true); //"for testing"
 
                     if (IsPlayerDead() == true)
                     {
@@ -147,20 +157,41 @@ public class GameManager : MonoBehaviour
                     }
                     else
                     {
+                        if (spawner.wave == 10)
+                        {
+                            m_MessageText.text = "Congratulations, You Win!";
+
+                            m_HighScores.AddScore(Mathf.RoundToInt(m_GameTime));
+                            m_HighScores.SaveScoresToFile();
+
+                            returnToMenu.gameObject.SetActive(true);
+                        }
+                        else
+                        {
+                            powerUpDamage.gameObject.SetActive(true);
+                            powerUpFireRate.gameObject.SetActive(true);
+                            powerUpHealth.gameObject.SetActive(true);
+                        }
+
                         //m_MessageText.text = "Winner!!"; "for testing"
 
                         //save the score
                         //m_HighScores.AddScore(Mathf.RoundToInt(m_GameTime)); "POSSIBLY CHANGE THESE TWO LINES TO AN IF STATEMENT FOR BEATING FINAL WAVE"
                         //m_HighScores.SaveScoresToFile();
-                        powerUpDamage.gameObject.SetActive(true);
+                       /*
+                        * 
+                        * powerUpDamage.gameObject.SetActive(true);
                         powerUpFireRate.gameObject.SetActive(true);
-                        powerUpHealth.gameObject.SetActive(true);
+                        powerUpHealth.gameObject.SetActive(true);*/
 
                         
 
                         //OnNewGame();
                     }
                 }
+                activeStats.text = "Fire Rate: " + player.GetComponent<PlayerShooting>().fireRate 
+                    +
+                    " Damage: " + shell.GetComponent<Shell>().m_MaxDamage;
                 break;
             case GameState.Gameover:
                 if (Input.GetKeyUp(KeyCode.Return) == true)
@@ -170,7 +201,9 @@ public class GameManager : MonoBehaviour
                     m_MessageText.text = "";
                     m_TimerText.gameObject.SetActive(true);
 
-                    for (int i = 0; i < m_Tanks.Length; i++)
+                    
+
+                    for (int i = 0; i < m_Tanks.Count; i++)
                     {
                         m_Tanks[i].SetActive(true);
                     }
@@ -187,6 +220,9 @@ public class GameManager : MonoBehaviour
         if (IsPlayerDead())
         {
             spawner.PlayerDeath();
+            player.GetComponent<PlayerShooting>().fireRate = 0.5f;
+            shell.GetComponent<Shell>().m_MaxDamage = 34;
+            player.GetComponent<Damage>().m_CurrentHealth = 100;
         }
         spawner.NextWave();
 
@@ -198,12 +234,14 @@ public class GameManager : MonoBehaviour
         powerUpFireRate.gameObject.SetActive(false);
         powerUpHealth.gameObject.SetActive(false);
 
+        
+
         //m_GameTime = 0; "For testing"
         m_GameState = GameState.Playing;
         //m_TimerText.gameObject.SetActive(true); "for testing
         m_MessageText.text = "";
 
-        for (int i = 0; i < m_Tanks.Length; i++)
+        for (int i = 0; i < m_Tanks.Count; i++)
         {
             m_Tanks[i].SetActive(true);
         }
@@ -227,9 +265,13 @@ public class GameManager : MonoBehaviour
         m_HighScoresText.text = text;
     }
 
+    public void ReturnToMenu(string MainMenu)
+    {
+        SceneManager.LoadScene(MainMenu);
+    }
     public void PowerUpFireRate()
     {
-        player.GetComponent<PlayerShooting>().fireRate -= 0.1f;
+        player.GetComponent<PlayerShooting>().fireRate -= 0.07f;
         Debug.Log("Fire Rate Increased!");
     }
 
@@ -240,6 +282,8 @@ public class GameManager : MonoBehaviour
 
     public void PowerUpHealth()
     {
-        player.GetComponent<Damage>().m_CurrentHealth += 20;
+        player.GetComponent<Damage>().m_CurrentHealth += 50;
+        
+        
     }
 }

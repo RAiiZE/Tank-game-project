@@ -11,6 +11,8 @@ public class SpawnEnemyTanks : MonoBehaviour
     public float spawnDelay;
     // Is able to spawn another tank
     public bool CanBirth;
+
+    GameObject gameManager;
     
 
 
@@ -20,7 +22,7 @@ public class SpawnEnemyTanks : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        gameManager = GameObject.FindGameObjectWithTag("GameController");
     }
 
     // Update is called once per frame
@@ -32,7 +34,11 @@ public class SpawnEnemyTanks : MonoBehaviour
         {
 
             timer = 0;
-            Instantiate(BabyTank, BirthLocation.position, Quaternion.identity);
+            if(GameObject.FindGameObjectWithTag("Player") != null)
+            {
+                gameManager.GetComponent<GameManager>().m_Tanks.Add(Instantiate(BabyTank, BirthLocation.position, Quaternion.identity));
+            }
+            
         }
 
 

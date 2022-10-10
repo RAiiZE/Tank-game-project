@@ -7,6 +7,11 @@ public class EnemySpawner : MonoBehaviour
 {
     public GameObject playerTank;
     public GameObject enemyPrefab;
+    public GameObject littleTank;
+    public GameObject turretTank;
+    public GameObject cloakerTank;
+    public GameObject birtha;
+    public GameObject bossTank;
 
     public int wave = 0;
 
@@ -17,8 +22,23 @@ public class EnemySpawner : MonoBehaviour
 
     public GameManager gameManager;
 
+    public List<GameObject> allTanks = new List<GameObject>();
+
+
+
+
+    public void Start()
+    {
+    }
+
     private void Awake()
     {
+        allTanks.Add(enemyPrefab);
+        allTanks.Add(littleTank);
+        allTanks.Add(turretTank);
+        allTanks.Add(cloakerTank);
+        allTanks.Add(birtha);
+
         // loop to run through each potential spawn point
         foreach (Transform spawnPoint in spawnPointsParent)
         {
@@ -32,22 +52,30 @@ public class EnemySpawner : MonoBehaviour
         // on next wave, wave goes up by 1
         wave += 1;
 
-        for (int i = 1; i < gameManager.m_Tanks.Length; i++)
+        for (int i = 1; i < gameManager.m_Tanks.Count; i++)
         {
             Destroy(gameManager.m_Tanks[i]);
         }
 
-        gameManager.m_Tanks = new GameObject[wave + 1];
-        gameManager.m_Tanks[0] = playerTank;
+        gameManager.m_Tanks = new List<GameObject>();
+        gameManager.m_Tanks.Add(playerTank);
         
         
         playerTank.SetActive(true);
 
         // on new wave, check how many tanks, if its less than the number of the wave, spawn 1 more at the potential spawn points.
-        for (int i = 1; i <= wave; i++)
-        {
-            gameManager.m_Tanks[i] = Instantiate(enemyPrefab, spawnPoints[Random.Range(0, spawnPoints.Count)], Quaternion.identity);
+
+        if (wave <= 9) {
+            for (int i = 1; i <= wave; i++)
+            {
+                gameManager.m_Tanks.Add(Instantiate(allTanks[Random.Range(0, allTanks.Count)], spawnPoints[Random.Range(0, spawnPoints.Count)], Quaternion.identity));
+            }
         }
+        else
+        {
+            gameManager.m_Tanks.Add(Instantiate(bossTank, spawnPoints[Random.Range(0, spawnPoints.Count)], Quaternion.identity));
+        }
+
     }
 
     // on death, wave becomes 0

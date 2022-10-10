@@ -5,7 +5,10 @@ using UnityEngine.UI;
 public class Damage : MonoBehaviour
 {
     // health each tank starts with
-    public float m_StartingHealth = 100f;
+    public float m_StartingHealth = 250f;
+
+    // set up the healthbar
+    public HealthBar healthBar;
 
     // a prefab that will be instantiated in Awake, then used whenever the tank dies
     public GameObject m_ExplosionPrefab;
@@ -23,10 +26,22 @@ public class Damage : MonoBehaviour
         //disable the prefab so it can be activated when its required
         m_ExplosionParticles.gameObject.SetActive(false);
     }
+
+    void Start()
+    {
+        
+        if (gameObject.tag == "Player")
+        {
+            healthBar.SetMaxHealth((int)m_StartingHealth);
+        }
+        //healthBar.SetMaxHealth((int)m_StartingHealth);
+    }
+
     public void OnEnable()
     {
         //when the tank is enabled, reset the tanks health and whether or not it is dead
         m_CurrentHealth = m_StartingHealth;
+
         m_Dead = false;
 
         SetHealthUI();
@@ -35,10 +50,16 @@ public class Damage : MonoBehaviour
     {
         //todo update the user interface showing the tanks hp
     }
-    public void TakeDamage(float amount)
+    public void TakeDamage(int amount)
     {
         //reduce current hp by the amount of damage done
         m_CurrentHealth -= amount;
+
+        if (gameObject.tag == "Player")
+        {
+            healthBar.SetHeath((int)m_CurrentHealth);
+        }
+        
 
         //change the ui elements appropriately
         SetHealthUI();
@@ -80,18 +101,12 @@ public class Damage : MonoBehaviour
 
 
 
-
-
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
     // Update is called once per frame
     void Update()
     {
-        
+        if (gameObject.tag == "Player")
+        {
+            healthBar.SetHeath((int)m_CurrentHealth);
+        }
     }
 }
