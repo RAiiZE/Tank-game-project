@@ -19,6 +19,8 @@ public class GameManager : MonoBehaviour
 
     public Button returnToMenu;
 
+    public Button returnToMainMenu;
+
     public List <GameObject> m_Tanks = new List<GameObject>();
 
     public EnemySpawner spawner;
@@ -51,7 +53,7 @@ public class GameManager : MonoBehaviour
     }
     void Start()
     {
-
+        //Invoke("ButtonOn", 1);
 
         // wave system
         spawner.NextWave();
@@ -68,6 +70,7 @@ public class GameManager : MonoBehaviour
         m_NewGameButton.gameObject.SetActive(false);
         m_HighScoresButton.gameObject.SetActive(false);
         returnToMenu.gameObject.SetActive(false);
+        returnToMainMenu.gameObject.SetActive(false);
 
         powerUpDamage.gameObject.SetActive(false);
         powerUpFireRate.gameObject.SetActive(false);
@@ -154,6 +157,7 @@ public class GameManager : MonoBehaviour
                     {
                         m_MessageText.text = "Game Over!";
                         m_NewGameButton.gameObject.SetActive(true);
+                        returnToMainMenu.gameObject.SetActive(true);
                     }
                     else
                     {
@@ -171,6 +175,7 @@ public class GameManager : MonoBehaviour
                             powerUpDamage.gameObject.SetActive(true);
                             powerUpFireRate.gameObject.SetActive(true);
                             powerUpHealth.gameObject.SetActive(true);
+                            Invoke("ButtonOn", 1);
                         }
 
                         //m_MessageText.text = "Winner!!"; "for testing"
@@ -193,7 +198,7 @@ public class GameManager : MonoBehaviour
                     +
                     " Damage: " + shell.GetComponent<Shell>().m_MaxDamage;
                 break;
-            case GameState.Gameover:
+            /*case GameState.Gameover:
                 if (Input.GetKeyUp(KeyCode.Return) == true)
                 {
                     m_GameTime = 0;
@@ -208,7 +213,7 @@ public class GameManager : MonoBehaviour
                         m_Tanks[i].SetActive(true);
                     }
                 }
-                break;
+                break;*/
         }
         if (Input.GetKeyUp(KeyCode.Escape))
         {
@@ -219,10 +224,20 @@ public class GameManager : MonoBehaviour
     {
         if (IsPlayerDead())
         {
+            m_GameTime = 0;
             spawner.PlayerDeath();
+
+            m_GameState = GameState.Playing;
+            for (int i = 0; i < m_Tanks.Count; i++)
+            {
+                m_Tanks[i].gameObject.SetActive(true);
+            }
+
             player.GetComponent<PlayerShooting>().fireRate = 0.5f;
             shell.GetComponent<Shell>().m_MaxDamage = 34;
-            player.GetComponent<Damage>().m_CurrentHealth = 100;
+            player.GetComponent<Damage>().m_CurrentHealth = 250;
+            GameObject.FindGameObjectWithTag("Player").transform.position = new Vector3(0, 0, 0);
+            returnToMainMenu.gameObject.SetActive(false);
         }
         spawner.NextWave();
 
@@ -267,23 +282,39 @@ public class GameManager : MonoBehaviour
 
     public void ReturnToMenu(string MainMenu)
     {
-        SceneManager.LoadScene(MainMenu);
+        SceneManager.LoadScene("MainMenu");
     }
     public void PowerUpFireRate()
     {
         player.GetComponent<PlayerShooting>().fireRate -= 0.07f;
-        Debug.Log("Fire Rate Increased!");
+
+        powerUpFireRate.GetComponent<Button>().enabled = false;
+        powerUpDamage.GetComponent<Button>().enabled = false;
+        powerUpHealth.GetComponent<Button>().enabled = false;
     }
 
     public void PowerUpDamage()
     {
         shell.GetComponent<Shell>().m_MaxDamage += 10;
+
+        powerUpDamage.GetComponent<Button>().enabled = false;
+        powerUpHealth.GetComponent<Button>().enabled = false;
+        powerUpFireRate.GetComponent<Button>().enabled = false;
     }
 
     public void PowerUpHealth()
     {
         player.GetComponent<Damage>().m_CurrentHealth += 50;
-        
-        
+
+        powerUpHealth.GetComponent <Button>().enabled = false;
+        powerUpFireRate.GetComponent<Button>().enabled = false;
+        powerUpDamage.GetComponent<Button>().enabled = false;
+    }
+
+    public void ButtonOn()
+    {
+        powerUpHealth.GetComponent<Button>().enabled = true;
+        powerUpFireRate.GetComponent<Button>().enabled = true;
+        powerUpDamage.GetComponent<Button>().enabled = true;
     }
 }

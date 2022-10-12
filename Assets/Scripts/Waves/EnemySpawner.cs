@@ -13,6 +13,8 @@ public class EnemySpawner : MonoBehaviour
     public GameObject birtha;
     public GameObject bossTank;
 
+    public GameObject lighting;
+
     public int wave = 0;
 
     public Transform spawnPointsParent;
@@ -57,6 +59,11 @@ public class EnemySpawner : MonoBehaviour
             Destroy(gameManager.m_Tanks[i]);
         }
 
+        if (wave >= 5)
+        {
+            lighting.GetComponent<Light>().color = new Color(0.6500f, 0.6500f, 0.6500f, 1);
+        }
+
         gameManager.m_Tanks = new List<GameObject>();
         gameManager.m_Tanks.Add(playerTank);
         
@@ -74,6 +81,7 @@ public class EnemySpawner : MonoBehaviour
         else
         {
             gameManager.m_Tanks.Add(Instantiate(bossTank, spawnPoints[Random.Range(0, spawnPoints.Count)], Quaternion.identity));
+            lighting.GetComponent<Light>().color = new Color(0.2358f, 0.2358f, 0.2358f, 1);
         }
 
     }
