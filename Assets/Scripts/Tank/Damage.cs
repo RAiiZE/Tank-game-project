@@ -30,10 +30,11 @@ public class Damage : MonoBehaviour
     void Start()
     {
         
-        if (gameObject.tag == "Player")
+        if (gameObject.tag == "Player" || gameObject.tag == "Boss")
         {
             healthBar.SetMaxHealth((int)m_StartingHealth);
         }
+        
         //healthBar.SetMaxHealth((int)m_StartingHealth);
     }
 
@@ -55,7 +56,7 @@ public class Damage : MonoBehaviour
         //reduce current hp by the amount of damage done
         m_CurrentHealth -= amount;
 
-        if (gameObject.tag == "Player")
+        if (gameObject.tag == "Player" || gameObject.tag == "Boss")
         {
             healthBar.SetHeath((int)m_CurrentHealth);
         }
@@ -104,7 +105,7 @@ public class Damage : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (gameObject.tag == "Player")
+        if (gameObject.tag == "Player" || gameObject.tag == "Boss")
         {
             healthBar.SetHeath((int)m_CurrentHealth);
         }
