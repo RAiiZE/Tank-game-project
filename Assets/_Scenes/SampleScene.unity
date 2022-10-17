@@ -928,7 +928,7 @@ MonoBehaviour:
   m_Text: 'Live Longer!
 
 
-    +50 HP'
+    +75 HP'
 --- !u!222 &382858196
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -3095,6 +3095,7 @@ GameObject:
   - component: {fileID: 963194228}
   - component: {fileID: 963194227}
   - component: {fileID: 963194226}
+  - component: {fileID: 963194229}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -3167,6 +3168,23 @@ Transform:
   m_Father: {fileID: 261082470}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &963194229
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 963194225}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b61442f05cf47b64caeaf628a1d5189f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cam: {fileID: 963194227}
+  minZoom: 6
+  maxZoom: 20
+  sensitivity: 1
+  speed: 30
 --- !u!1 &965134685
 GameObject:
   m_ObjectHideFlags: 0
@@ -3362,6 +3380,14 @@ PrefabInstance:
       propertyPath: secondSpawner
       value: 
       objectReference: {fileID: 1629682668}
+    - target: {fileID: 473764112, guid: 263137604fee37a41b1c8b11d950bdbb, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1886902547, guid: 263137604fee37a41b1c8b11d950bdbb, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4375836221206488634, guid: 263137604fee37a41b1c8b11d950bdbb, type: 3}
       propertyPath: healthBar
       value: 
@@ -3433,6 +3459,14 @@ PrefabInstance:
     - target: {fileID: 5777723759510048814, guid: 263137604fee37a41b1c8b11d950bdbb, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6918769698888689870, guid: 263137604fee37a41b1c8b11d950bdbb, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6918769698888689870, guid: 263137604fee37a41b1c8b11d950bdbb, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 263137604fee37a41b1c8b11d950bdbb, type: 3}
@@ -3990,11 +4024,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
   m_ReferenceResolution: {x: 800, y: 600}
-  m_ScreenMatchMode: 0
+  m_ScreenMatchMode: 1
   m_MatchWidthOrHeight: 0
   m_PhysicalUnit: 3
   m_FallbackScreenDPI: 96
@@ -4715,6 +4749,7 @@ GameObject:
   - component: {fileID: 1494180877}
   - component: {fileID: 1494180879}
   - component: {fileID: 1494180880}
+  - component: {fileID: 1494180881}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: GameController
@@ -4783,7 +4818,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   scores: 00000000000000000000000000000000000000000000000000000000000000000000000000000000
-  scoreFileName: highscores.txt
+  scoreFileName: SmallHighScores.txt
 --- !u!114 &1494180880
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4802,13 +4837,27 @@ MonoBehaviour:
   turretTank: {fileID: 311175019727119023, guid: dfc59796e51bf6c4a8671074f0d7164b, type: 3}
   cloakerTank: {fileID: 3866093354126472665, guid: 1574729118e1f0a479eb5c95daa9cc67, type: 3}
   birtha: {fileID: 1041244141437251663, guid: 205f5c04df525ff45b8a13b4b74478ee, type: 3}
-  bossTank: {fileID: 207942867867856620, guid: 2b4bcd124848b1b42baf323857c1947f, type: 3}
+  bossTank: {fileID: 6654414850112421623, guid: 61934d394e0a2844f9eab95df36e2575, type: 3}
   lighting: {fileID: 705507993}
   wave: 0
   spawnPointsParent: {fileID: 306686824}
   waveCounter: {fileID: 511613905}
   gameManager: {fileID: 1494180877}
   allTanks: []
+--- !u!114 &1494180881
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1494180876}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 44fdafbc6f2af0a43ba892ac1845abc0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  scores: 00000000000000000000000000000000000000000000000000000000000000000000000000000000
+  scoreFileName: SmallHighScores.txt
 --- !u!1 &1527697211
 GameObject:
   m_ObjectHideFlags: 0
