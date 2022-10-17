@@ -7,6 +7,14 @@ public class Billboard : MonoBehaviour
 
     public Transform cam;
 
+
+
+    void Start()
+    {// can use either to help code find the camera of the scene but bottem line is more reliable.
+
+        // cam = GameObject.Find("CameraRig").transform;
+        cam = Camera.main.transform.parent;
+    }
     // Update is called once per frame
     void LateUpdate()
     {
