@@ -66,7 +66,7 @@ public class GameManager : MonoBehaviour
 
         // Disable certains texts and buttons on game start
         m_TimerText.gameObject.SetActive(false);
-        m_MessageText.text = "Get Ready!";
+        m_MessageText.text = "Press Enter to Start!";
 
         m_HighScorePanel.gameObject.SetActive(false);
         m_NewGameButton.gameObject.SetActive(false);
