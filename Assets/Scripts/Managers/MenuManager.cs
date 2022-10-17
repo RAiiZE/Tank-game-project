@@ -9,11 +9,15 @@ public class MenuManager : MonoBehaviour
 
     public Button highScore;
 
+    public Button smallHighScore;
+
     public Button returnToMenu;
 
     public Text highScoreText;
 
     public HighScores highScores;
+
+    public SmallHighScores smallHighScores;
 
     private void Start()
     {
@@ -35,6 +39,19 @@ public class MenuManager : MonoBehaviour
         highScoreText.text = text;
     }
 
+    public void ViewSmallHighScore()
+    {
+        highScorePanel.gameObject.SetActive(true);
+        returnToMenu.gameObject.SetActive(true);
+
+        string text = "";
+        for (int i = 0; i < smallHighScores.scores.Length; i++)
+        {
+            int seconds = smallHighScores.scores[i];
+            text += string.Format("{0:D2}:{1:D2}\n", (seconds / 60), (seconds % 60));
+        }
+        highScoreText.text = text;
+    }
     public void ReturnToMainMenu()
     {
         highScorePanel.SetActive(false);

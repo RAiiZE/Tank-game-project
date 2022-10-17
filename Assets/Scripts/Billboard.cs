@@ -5,6 +5,7 @@ using UnityEngine;
 public class Billboard : MonoBehaviour
 {
 
+    // reference to the camera
     public Transform cam;
 
 

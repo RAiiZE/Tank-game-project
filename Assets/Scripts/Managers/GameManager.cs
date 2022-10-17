@@ -36,6 +36,7 @@ public class GameManager : MonoBehaviour
     private float m_GameTime = 0;
     public float GameTime { get { return m_GameTime; } }
 
+    // The gamestates
     public enum GameState
     {
         Start,
@@ -63,6 +64,7 @@ public class GameManager : MonoBehaviour
             m_Tanks[i].SetActive(false);
         }
 
+        // Disable certains texts and buttons on game start
         m_TimerText.gameObject.SetActive(false);
         m_MessageText.text = "Get Ready!";
 
@@ -94,6 +96,7 @@ public class GameManager : MonoBehaviour
         return numTanksLeft <= 1;
     }
 
+    // Triggers if player is dead
     private bool IsPlayerDead()
     {
         for (int i = 0; i < m_Tanks.Count; i++)
@@ -111,7 +114,7 @@ public class GameManager : MonoBehaviour
     void Update()
     {
 
-        
+        // Switch statement for the differnet gamestates
 
         switch (m_GameState)
         {
@@ -128,6 +131,7 @@ public class GameManager : MonoBehaviour
                     }
                 }
                 break;
+
             case GameState.Playing:
                 bool isGameOver = false;
                 m_GameTime += Time.deltaTime;
@@ -148,11 +152,6 @@ public class GameManager : MonoBehaviour
                 if (isGameOver == true)
                 {
                     m_GameState = GameState.Gameover;
-                    // m_TimerText.gameObject.SetActive(false); "for testing"
-
-                    //m_NewGameButton.gameObject.SetActive(true); "FOR TESTING"
-                    //m_HighScoresButton.gameObject.SetActive(true); //"for testing"
-
                     if (IsPlayerDead() == true)
                     {
                         m_MessageText.text = "Game Over!";
@@ -161,7 +160,7 @@ public class GameManager : MonoBehaviour
                     }
                     else
                     {
-                        if (spawner.wave == 10)
+                        if (spawner.wave == 10) // Triggers if you successfully defeat the boss on wave 10
                         {
                             m_MessageText.text = "Congratulations, You Win!";
 
@@ -170,50 +169,19 @@ public class GameManager : MonoBehaviour
 
                             returnToMenu.gameObject.SetActive(true);
                         }
-                        else
+                        else // Triggers at the end of the wave, letting you select a powerup
                         {
                             powerUpDamage.gameObject.SetActive(true);
                             powerUpFireRate.gameObject.SetActive(true);
                             powerUpHealth.gameObject.SetActive(true);
                             Invoke("ButtonOn", 1);
                         }
-
-                        //m_MessageText.text = "Winner!!"; "for testing"
-
-                        //save the score
-                        //m_HighScores.AddScore(Mathf.RoundToInt(m_GameTime)); "POSSIBLY CHANGE THESE TWO LINES TO AN IF STATEMENT FOR BEATING FINAL WAVE"
-                        //m_HighScores.SaveScoresToFile();
-                       /*
-                        * 
-                        * powerUpDamage.gameObject.SetActive(true);
-                        powerUpFireRate.gameObject.SetActive(true);
-                        powerUpHealth.gameObject.SetActive(true);*/
-
-                        
-
-                        //OnNewGame();
                     }
                 }
                 activeStats.text = "Fire Rate: " + player.GetComponent<PlayerShooting>().fireRate 
                     +
                     " Damage: " + shell.GetComponent<Shell>().m_MaxDamage;
                 break;
-            /*case GameState.Gameover:
-                if (Input.GetKeyUp(KeyCode.Return) == true)
-                {
-                    m_GameTime = 0;
-                    m_GameState = GameState.Playing;
-                    m_MessageText.text = "";
-                    m_TimerText.gameObject.SetActive(true);
-
-                    
-
-                    for (int i = 0; i < m_Tanks.Count; i++)
-                    {
-                        m_Tanks[i].SetActive(true);
-                    }
-                }
-                break;*/
         }
         if (Input.GetKeyUp(KeyCode.Escape))
         {
@@ -233,6 +201,7 @@ public class GameManager : MonoBehaviour
                 m_Tanks[i].gameObject.SetActive(true);
             }
 
+            // On Death, reset position and stats back to the base
             player.GetComponent<PlayerShooting>().fireRate = 0.5f;
             shell.GetComponent<Shell>().m_MaxDamage = 34;
             player.GetComponent<Damage>().m_CurrentHealth = 250;
@@ -241,6 +210,7 @@ public class GameManager : MonoBehaviour
         }
         spawner.NextWave();
 
+        // Disable some buttons again
         m_NewGameButton.gameObject.SetActive(false);
         m_HighScoresButton.gameObject.SetActive(false);
         m_HighScorePanel.gameObject.SetActive(false);
@@ -280,10 +250,13 @@ public class GameManager : MonoBehaviour
         m_HighScoresText.text = text;
     }
 
+    // button to load back to main menu
     public void ReturnToMenu(string MainMenu)
     {
         SceneManager.LoadScene("MainMenu");
     }
+
+    // Next 3 functions are for the three powerups that pop up at the end of the waves
     public void PowerUpFireRate()
     {
         player.GetComponent<PlayerShooting>().fireRate -= 0.07f;
@@ -304,7 +277,7 @@ public class GameManager : MonoBehaviour
 
     public void PowerUpHealth()
     {
-        player.GetComponent<Damage>().m_CurrentHealth += 50;
+        player.GetComponent<Damage>().m_CurrentHealth += 75;
 
         powerUpHealth.GetComponent <Button>().enabled = false;
         powerUpFireRate.GetComponent<Button>().enabled = false;

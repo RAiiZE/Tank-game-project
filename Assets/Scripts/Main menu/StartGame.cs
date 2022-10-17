@@ -9,4 +9,9 @@ public class StartGame : MonoBehaviour
     {
         SceneManager.LoadScene(Level_0);
     }
+
+    public void LoadSmallScene(string SampleScene)
+    {
+        SceneManager.LoadScene(SampleScene);
+    }
 }
