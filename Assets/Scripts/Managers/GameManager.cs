@@ -128,6 +128,7 @@ public class GameManager : MonoBehaviour
                     for (int i = 0; i < m_Tanks.Count; i++)
                     {
                         m_Tanks[i].SetActive(true);
+                        
                     }
                 }
                 break;
@@ -289,5 +290,13 @@ public class GameManager : MonoBehaviour
         powerUpHealth.GetComponent<Button>().enabled = true;
         powerUpFireRate.GetComponent<Button>().enabled = true;
         powerUpDamage.GetComponent<Button>().enabled = true;
+    }
+
+    public void RemoveTank(GameObject Tank)
+    {
+        if (m_Tanks.Contains(Tank))
+        {
+            m_Tanks.Remove(Tank);
+        }
     }
 }

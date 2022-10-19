@@ -19,6 +19,12 @@ public class MenuManager : MonoBehaviour
 
     public SmallHighScores smallHighScores;
 
+    public Button rainbowButton;
+
+    public static bool rainbowOn;
+
+    public Text toggle;
+
     private void Start()
     {
         highScorePanel.SetActive(false);
@@ -56,5 +62,30 @@ public class MenuManager : MonoBehaviour
     {
         highScorePanel.SetActive(false);
         returnToMenu.gameObject.SetActive(false);
+    }
+
+    public void Update()
+    {
+        if (rainbowOn == true)
+        {
+            toggle.text = "Rainbow Light: On";
+        }
+        else
+        {
+            toggle.text = "Rainbow Light: Off";
+        }
+    }
+    public void RainbowToggle()
+    {
+        if (rainbowOn == false)
+        {
+            rainbowOn = true;
+            Debug.Log("rainbows on");
+        }
+        else
+        {
+            rainbowOn = false;
+            Debug.Log("rainbows off");
+        }
     }
 }
